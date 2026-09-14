@@ -1,0 +1,59 @@
+:root {
+  /* ── Primary Brand ───────────────────────────────────────────────────── */
+  --color-navy:        #0D1F35;   /* Deep teal-navy — primary text & buttons */
+  --color-navy-light:  #1A3352;   /* Lighter navy for hover states            */
+  --color-navy-dark:   #071424;   /* Darkest navy — hero backgrounds          */
+
+  /* ── Accent: Indigo-Violet ───────────────────────────────────────────── */
+  --color-indigo:      #5B4CF5;   /* Primary accent — focus rings, highlights */
+  --color-indigo-light:#7C70F8;   /* Hover / lighter tint                      */
+  --color-indigo-dark: #3B2FD9;   /* Pressed states                            */
+
+  /* ── Energy: Amber (streaks, CTAs, countdowns) ───────────────────────── */
+  --color-amber:       #F59E0B;
+  --color-amber-light: #FCD34D;
+  --color-amber-dark:  #D97706;
+
+  /* ── Surfaces ─────────────────────────────────────────────────────────── */
+  --color-paper:       #FAFAF9;   /* Page background — very warm off-white    */
+  --color-paper-light: #FFFFFF;   /* Card / modal backgrounds                 */
+
+  /* ── Text ──────────────────────────────────────────────────────────────── */
+  --color-ink:         #0D1F35;   /* Body text — same as navy                 */
+  --color-ink-soft:    #5E6E84;   /* Muted / secondary text                   */
+  --color-ink-faint:   #94A3B8;   /* Placeholder / very muted                 */
+
+  /* ── Status ────────────────────────────────────────────────────────────── */
+  --color-pen:         #E11D48;   /* Danger / error / destructive              */
+  --color-pen-light:   #FB7185;   /* Soft rose for backgrounds                 */
+  --color-success:     #059669;   /* Completion / confirmed                    */
+  --color-success-light:#34D399;  /* Lighter emerald for icons/chips           */
+
+  /* ── Borders & Lines ───────────────────────────────────────────────────── */
+  --color-line:        #E4E8EF;   /* Default border colour                     */
+  --color-line-soft:   #F1F4F9;   /* Very faint divider                        */
+
+  /* ── Legacy accent aliases kept for backwards compat ─────────────────── */
+  --color-accent-amber:        var(--color-amber-dark);
+  --color-accent-amber-light:  var(--color-amber);
+  --color-accent-blue:         #2563EB;
+  --color-accent-purple:       #7C3AED;
+
+  /* ── Typography ────────────────────────────────────────────────────────── */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans:  'Inter', system-ui, -apple-system, sans-serif;
+
+  /* ── Shadows ───────────────────────────────────────────────────────────── */
+  --shadow-xs:  0 1px 2px 0 rgba(13, 31, 53, 0.05);
+  --shadow-sm:  0 1px 4px 0 rgba(13, 31, 53, 0.07);
+  --shadow-md:  0 4px 16px -2px rgba(91, 76, 245, 0.13), 0 2px 6px -1px rgba(13, 31, 53, 0.06);
+  --shadow-lg:  0 10px 32px -4px rgba(91, 76, 245, 0.20), 0 4px 12px -2px rgba(13, 31, 53, 0.10);
+  --shadow-glow-indigo: 0 0 24px rgba(91, 76, 245, 0.40);
+  --shadow-glow-amber:  0 0 18px rgba(245, 158, 11, 0.45);
+  --shadow-glow-rose:   0 0 20px rgba(225, 29, 72, 0.35);
+
+  /* ── Transitions ───────────────────────────────────────────────────────── */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   380ms cubic-bezier(0.4, 0, 0.2, 1);
+}

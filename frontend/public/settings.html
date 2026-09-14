@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — Scora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:         '#0D1F35',
+            'navy-light': '#1A3352',
+            'navy-dark':  '#071424',
+            indigo:       '#5B4CF5',
+            'indigo-light':'#7C70F8',
+            'indigo-dark': '#3B2FD9',
+            amber:        '#F59E0B',
+            'amber-dark': '#D97706',
+            paper:        '#FAFAF9',
+            ink:          '#0D1F35',
+            'ink-soft':   '#5E6E84',
+            'ink-faint':  '#94A3B8',
+            pen:          '#E11D48',
+            'pen-light':  '#FB7185',
+            success:      '#059669',
+            'success-light':'#34D399',
+            line:         '#E4E8EF',
+            'line-soft':  '#F1F4F9',
+          },
+          fontFamily: { serif: ['Fraunces', 'serif'], sans: ['Inter', 'sans-serif'] },
+          boxShadow: {
+            'indigo-glow': '0 0 24px rgba(91, 76, 245, 0.40)',
+            'amber-glow':  '0 0 18px rgba(245, 158, 11, 0.45)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="font-sans bg-paper text-ink min-h-screen pb-28">
+
+  <div class="max-w-md sm:max-w-lg mx-auto px-5 pt-8">
+    <h1 class="font-serif text-3xl font-bold text-navy mb-6">Settings & Profile</h1>
+
+    <!-- Student Profile Card -->
+    <div class="bg-white border border-line rounded-2xl p-5 mb-6 shadow-sm flex items-start gap-4">
+      <div id="profile-initial" class="w-14 h-14 rounded-full gradient-indigo text-paper flex items-center justify-center font-serif text-2xl font-bold shrink-0 shadow-md border-2 border-white">
+        —
+      </div>
+      <div class="min-w-0 flex-1">
+        <h2 id="profile-name" class="font-bold text-base text-navy truncate">—</h2>
+        <p id="profile-email" class="text-xs text-ink-soft truncate mb-1.5">—</p>
+        <p id="profile-school" class="text-xs font-semibold text-indigo bg-indigo/10 px-2.5 py-0.5 rounded-full border border-indigo/20 inline-block">
+          —
+        </p>
+      </div>
+    </div>
+
+    <!-- Feedback & Support Button Banner -->
+    <div class="gradient-indigo rounded-2xl p-5 mb-6 text-paper shadow-md ruled-bg relative overflow-hidden">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10px] uppercase font-bold text-paper/70 tracking-wider">Student Community</span>
+        <span class="bg-pen text-white text-[10px] font-bold px-2 py-0.5 rounded">New</span>
+      </div>
+      <h2 class="font-serif text-lg font-bold text-paper mb-1">Help Us Improve Scora</h2>
+      <p class="text-xs text-paper/80 leading-relaxed mb-4">Have suggestions for new features, extra study materials, or found a bug? Share your thoughts with us!</p>
+      <a href="feedback.html" class="inline-flex items-center justify-center gap-2 bg-white text-navy w-full py-2.5 rounded-xl text-xs font-bold hover:bg-paper transition shadow-sm">
+        💬 Send Advice & Feedback
+      </a>
+      <!-- Decorative blob -->
+      <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-indigo-light/30 blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- Exam details -->
+    <div class="mb-6">
+      <h2 class="font-serif text-lg font-bold text-navy mb-3">SSC Board Exam Schedule</h2>
+      <div class="bg-white border border-line rounded-2xl p-5 space-y-4 shadow-sm">
+        <div>
+          <label for="exam-date-input" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">First Board Exam Date</label>
+          <input type="date" id="exam-date-input" class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-indigo focus:ring-1 focus:ring-indigo outline-none" />
+          <p class="text-[11px] text-ink-soft mt-1">If official datesheet is not released yet, target month is set to March 2027 by default.</p>
+        </div>
+        <button id="save-exam-details" class="w-full bg-navy text-paper py-2.5 rounded-xl text-xs font-bold hover:bg-navy-light transition shadow-sm">
+          Save Date Changes
+        </button>
+        <p id="save-confirmation" class="hidden text-xs text-success text-center font-semibold">✓ Saved successfully!</p>
+      </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-serif text-lg font-bold text-navy">Daily Reminders</h2>
+        <button id="master-notif-toggle" class="w-11 h-6 rounded-full relative transition bg-line">
+          <span id="master-toggle-knob" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition shadow-sm"></span>
+        </button>
+      </div>
+      <p id="permission-status" class="text-xs text-ink-soft mb-3 font-medium"></p>
+
+      <div id="permission-prompt" class="hidden bg-white border border-line rounded-2xl p-4 mb-3 text-center shadow-sm">
+        <p class="text-xs text-ink-soft mb-3">Enable browser notifications to receive daily task revision alerts.</p>
+        <button id="enable-notifications" class="bg-indigo text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-light transition shadow-sm">
+          Enable Reminders
+        </button>
+      </div>
+
+      <!-- Test Notification Button -->
+      <button id="test-notif-btn" class="w-full border border-indigo/30 bg-indigo/5 text-indigo py-2 rounded-xl text-xs font-bold hover:bg-indigo/10 transition mb-3 flex items-center justify-center gap-1.5">
+        <span>🔔</span> Send Test Notification Now
+      </button>
+
+      <div id="reminders-list" class="space-y-2.5"></div>
+      <p id="no-tasks-msg" class="hidden text-xs text-ink-soft border border-dashed border-line rounded-2xl px-4 py-6 text-center bg-white/60">
+        Add tasks in your Tracker to set daily reminder alerts.
+      </p>
+    </div>
+
+    <!-- Account -->
+    <div class="mb-8">
+      <h2 class="font-serif text-lg font-bold text-navy mb-3">Account</h2>
+      <button id="logout-btn" class="w-full border border-pen/30 text-pen py-2.5 rounded-xl text-xs font-bold hover:bg-pen/5 transition shadow-sm">
+        Log out of Scora
+      </button>
+    </div>
+
+  </div>
+
+  <div id="chat-fab-root"></div>
+  <div id="bottom-nav-root"></div>
+
+  <script type="module" src="js/settings.js"></script>
+</body>
+</html>

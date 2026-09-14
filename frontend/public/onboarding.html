@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set up your profile — Scora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#152238',
+            'navy-light': '#1E304F',
+            paper: '#F7F5EF',
+            ink: '#1C1C1E',
+            'ink-soft': '#5B5B60',
+            pen: '#C1121F',
+            success: '#2E7D32',
+            line: '#D8D4C8',
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    input:focus-visible, button:focus-visible {
+      outline: 2px solid #C1121F;
+      outline-offset: 2px;
+    }
+    .medium-card.selected {
+      border-color: #152238;
+      background: #152238;
+      color: #F7F5EF;
+    }
+    .medium-card.selected .medium-sub {
+      color: rgba(247, 245, 239, 0.6);
+    }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+  </style>
+</head>
+<body class="font-sans bg-paper text-ink min-h-screen">
+
+  <div class="max-w-lg mx-auto px-6 py-10 sm:py-16">
+
+    <!-- Header: logo + progress -->
+    <div class="flex items-center justify-between mb-10">
+      <span class="font-serif text-xl font-semibold text-navy">Scora</span>
+      <div class="flex items-center gap-2">
+        <span id="step-label" class="text-xs text-ink-soft">Step 1 of 2</span>
+        <div class="flex gap-1.5">
+          <div id="dot-1" class="w-6 h-1.5 rounded-full bg-navy"></div>
+          <div id="dot-2" class="w-6 h-1.5 rounded-full bg-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 1: Medium selection -->
+    <div id="step-1" class="step-panel active">
+      <h1 class="font-serif text-3xl text-navy mb-2">What's your medium?</h1>
+      <p class="text-ink-soft text-sm mb-8">This decides which language your workbooks and papers show in.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+        <button type="button" data-medium="English" class="medium-card text-left border border-line rounded-xl px-4 py-4 transition hover:border-navy/40">
+          <p class="font-medium">English</p>
+          <p class="medium-sub text-xs text-ink-soft mt-0.5">English medium</p>
+        </button>
+        <button type="button" data-medium="Marathi" class="medium-card text-left border border-line rounded-xl px-4 py-4 transition hover:border-navy/40">
+          <p class="font-medium">मराठी</p>
+          <p class="medium-sub text-xs text-ink-soft mt-0.5">Marathi medium</p>
+        </button>
+        <button type="button" data-medium="Semi-English" class="medium-card text-left border border-line rounded-xl px-4 py-4 transition hover:border-navy/40">
+          <p class="font-medium">Semi-English</p>
+          <p class="medium-sub text-xs text-ink-soft mt-0.5">Science & Maths in English</p>
+        </button>
+        <button type="button" data-medium="Hindi" class="medium-card text-left border border-line rounded-xl px-4 py-4 transition hover:border-navy/40">
+          <p class="font-medium">हिंदी</p>
+          <p class="medium-sub text-xs text-ink-soft mt-0.5">Hindi medium</p>
+        </button>
+      </div>
+
+      <button id="to-step-2" disabled
+        class="w-full bg-navy text-paper py-3 rounded-lg text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition hover:bg-navy-light">
+        Continue
+      </button>
+    </div>
+
+    <!-- Step 2: Exam date -->
+    <div id="step-2" class="step-panel">
+      <h1 class="font-serif text-3xl text-navy mb-2">When are your boards?</h1>
+      <p class="text-ink-soft text-sm mb-8">We'll use this to power your countdown and revision reminders.</p>
+
+      <label for="exam-date" class="block text-sm font-medium text-ink mb-1.5">First board exam date</label>
+      <input type="date" id="exam-date" required
+        class="w-full px-3.5 py-2.5 border border-line rounded-lg text-sm bg-white mb-1
+               focus:border-navy focus:ring-1 focus:ring-navy outline-none transition" />
+      <p class="text-xs text-ink-soft mb-8">Not sure yet? You can update this anytime from Settings.</p>
+
+      <div class="flex gap-3">
+        <button id="back-to-step-1" type="button"
+          class="px-5 py-3 rounded-lg text-sm font-medium border border-line hover:bg-black/[0.02] transition">
+          Back
+        </button>
+        <button id="finish-btn"
+          class="flex-1 bg-navy text-paper py-3 rounded-lg text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition hover:bg-navy-light">
+          Finish setup
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="js/onboarding.js"></script>
+</body>
+</html>

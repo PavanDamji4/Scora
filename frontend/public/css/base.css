@@ -1,0 +1,213 @@
+@import url('./variables.css');
+
+/* ── Reset & Box Model ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Custom Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--color-line); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-ink-soft); }
+
+/* ── Focus Ring ─────────────────────────────────────────────────────────── */
+input:focus-visible,
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-indigo);
+  outline-offset: 2px;
+}
+
+/* ── Ruled Paper Background ─────────────────────────────────────────────── */
+.ruled-bg {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 35px,
+    rgba(255, 255, 255, 0.04) 36px
+  );
+}
+
+/* ── Glassmorphism ──────────────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(228, 232, 239, 0.8);
+}
+
+/* ── Gradient Utilities ─────────────────────────────────────────────────── */
+
+/* Hero / header panels */
+.gradient-navy {
+  background: linear-gradient(135deg, #0D1F35 0%, #0D2547 60%, #162B50 100%);
+}
+
+/* Accent panels (feature highlights, onboarding) */
+.gradient-indigo {
+  background: linear-gradient(135deg, #0D1F35 0%, #221B6E 50%, #3B2FD9 100%);
+}
+
+/* Hero CTA / splash screen */
+.gradient-hero {
+  background: linear-gradient(135deg, #0D1F35 0%, #1E1560 40%, #5B4CF5 100%);
+}
+
+/* Amber — streaks, energy, countdown */
+.gradient-amber {
+  background: linear-gradient(135deg, #D97706 0%, #F59E0B 60%, #FCD34D 100%);
+}
+
+/* Danger / destructive */
+.gradient-rose {
+  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+}
+
+/* Success / completion */
+.gradient-emerald {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* Vault / resources panel */
+.gradient-teal {
+  background: linear-gradient(135deg, #0D1F35 0%, #134E4A 60%, #0D9488 100%);
+}
+
+/* ── Surface Tints (light accent backgrounds) ───────────────────────────── */
+.surface-indigo { background: rgba(91, 76, 245, 0.06); }
+.surface-amber  { background: rgba(245, 158, 11, 0.08); }
+.surface-rose   { background: rgba(225, 29, 72, 0.06); }
+.surface-emerald{ background: rgba(5, 150, 105, 0.07); }
+
+/* ── Keyframe Animations ────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(91, 76, 245, 0.4); }
+  50%       { box-shadow: 0 0 0 10px rgba(91, 76, 245, 0); }
+}
+
+@keyframes pulseAmber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in      { animation: fadeIn var(--transition-normal) forwards; }
+.animate-slide-up     { animation: slideUp var(--transition-slow) forwards; }
+.animate-pulse-glow   { animation: pulseGlow 2s infinite; }
+.animate-pulse-amber  { animation: pulseAmber 2s infinite; }
+
+/* Loading skeleton shimmer */
+.shimmer {
+  background: linear-gradient(90deg, #f1f4f9 25%, #e4e8ef 50%, #f1f4f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Sarthi / AI Markdown Response Formatting ───────────────────────────── */
+.markdown-body {
+  line-height: 1.65;
+  color: var(--color-ink);
+}
+.markdown-body p {
+  margin-bottom: 0.5rem;
+}
+.markdown-body p:last-child {
+  margin-bottom: 0;
+}
+.markdown-body strong {
+  color: var(--color-indigo-dark);
+  font-weight: 700;
+}
+.markdown-body em {
+  color: var(--color-ink-soft);
+}
+.markdown-body ul {
+  list-style-type: disc;
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.markdown-body li {
+  margin-bottom: 0.3rem;
+}
+.markdown-body h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin: 0.75rem 0 0.4rem;
+}
+.markdown-body h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin: 0.5rem 0 0.3rem;
+}
+.markdown-body code {
+  background: rgba(91, 76, 245, 0.08);
+  color: var(--color-indigo);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: monospace;
+}
+.markdown-body pre {
+  background: var(--color-navy);
+  color: var(--color-paper);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+}
+.markdown-body pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+.markdown-body blockquote {
+  border-left: 3px solid var(--color-indigo);
+  padding-left: 0.75rem;
+  color: var(--color-ink-soft);
+  font-style: italic;
+  margin: 0.5rem 0;
+  background: rgba(91, 76, 245, 0.04);
+  border-radius: 0 6px 6px 0;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}

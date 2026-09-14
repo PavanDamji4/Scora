@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Vault — Scora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:         '#0D1F35',
+            'navy-light': '#1A3352',
+            'navy-dark':  '#071424',
+            indigo:       '#5B4CF5',
+            'indigo-light':'#7C70F8',
+            'indigo-dark': '#3B2FD9',
+            amber:        '#F59E0B',
+            'amber-dark': '#D97706',
+            paper:        '#FAFAF9',
+            ink:          '#0D1F35',
+            'ink-soft':   '#5E6E84',
+            'ink-faint':  '#94A3B8',
+            pen:          '#E11D48',
+            'pen-light':  '#FB7185',
+            success:      '#059669',
+            'success-light':'#34D399',
+            line:         '#E4E8EF',
+            'line-soft':  '#F1F4F9',
+          },
+          fontFamily: { serif: ['Fraunces', 'serif'], sans: ['Inter', 'sans-serif'] },
+          boxShadow: {
+            'indigo-glow': '0 0 24px rgba(91, 76, 245, 0.40)',
+            'amber-glow':  '0 0 18px rgba(245, 158, 11, 0.45)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="font-sans bg-paper text-ink min-h-screen pb-28">
+
+  <div class="max-w-md sm:max-w-lg mx-auto px-5 pt-8">
+
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="font-serif text-3xl font-bold text-navy mb-1">Study Vault</h1>
+      <p class="text-ink-soft text-sm">Verified SSC Workbooks, Practical Journals & 3-Year PYQs.</p>
+    </div>
+
+    <!-- Type Tabs -->
+    <div id="vault-tabs" class="flex border-b border-line mb-6 bg-white/60 p-1 rounded-xl border"></div>
+
+    <!-- Vault Items Content -->
+    <div id="vault-content" class="min-h-[300px]"></div>
+  </div>
+
+  <!-- Resource viewer modal -->
+  <div id="resource-modal" class="hidden fixed inset-0 bg-navy/80 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-6 backdrop-blur-sm animate-fade-in">
+    <div class="bg-paper w-full sm:max-w-3xl sm:rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-line"
+         style="height: calc(100vh - 64px); max-height: 92vh;">
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-line bg-white shrink-0">
+        <div class="min-w-0 pr-3 flex-1">
+          <span id="modal-category" class="text-[10px] uppercase font-bold text-indigo tracking-wider block mb-0.5">Resource</span>
+          <h2 id="modal-title" class="font-serif text-base sm:text-lg font-bold text-navy truncate">—</h2>
+        </div>
+        <button id="modal-close"
+          class="w-9 h-9 rounded-full bg-line-soft flex items-center justify-center text-ink-soft hover:text-navy hover:bg-line transition shrink-0 active:scale-95">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Preview Container -->
+      <div class="flex-1 relative bg-black/5 overflow-hidden">
+        <div id="modal-status" class="absolute inset-0 flex flex-col items-center justify-center text-sm text-ink-soft text-center p-8 bg-paper z-10">
+          <svg class="animate-spin h-8 w-8 text-indigo mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p class="font-semibold text-navy">Loading Study Material…</p>
+          <p class="text-xs text-ink-soft mt-1">Opening from Google Drive</p>
+        </div>
+        <iframe id="modal-frame" class="hidden w-full h-full border-0" allow="autoplay"></iframe>
+      </div>
+
+      <!-- Modal Footer — always visible, sticks to bottom -->
+      <div class="px-4 sm:px-6 py-3 border-t border-line bg-white shrink-0 flex items-center gap-3">
+
+        <!-- Download / Open button -->
+        <a id="modal-download" href="#" target="_blank"
+          class="hidden flex-1 items-center justify-center gap-2
+                 bg-navy text-paper py-3 rounded-xl
+                 text-sm font-bold
+                 hover:bg-navy-light active:scale-[0.98]
+                 transition shadow-md shadow-navy/15">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round"/>
+            <polyline points="7 10 12 15 17 10" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="15" x2="12" y2="3" stroke-linecap="round"/>
+          </svg>
+          Download PDF
+        </a>
+
+        <!-- Open in Drive button (secondary) -->
+        <a id="modal-open-drive" href="#" target="_blank"
+          class="hidden items-center justify-center gap-1.5
+                 border border-line text-ink-soft
+                 py-3 px-4 rounded-xl
+                 text-xs font-semibold
+                 hover:border-navy/30 hover:text-navy hover:bg-line-soft
+                 active:scale-[0.98] transition shrink-0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-linecap="round"/>
+            <polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round"/>
+          </svg>
+          Open in Drive
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="bottom-nav-root"></div>
+  <div id="chat-fab-root"></div>
+
+  <script type="module" src="js/vault.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+/* ── Badge Pills ─────────────────────────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.badge-navy {
+  background: var(--color-navy);
+  color: var(--color-paper);
+}
+
+.badge-indigo {
+  background: rgba(91, 76, 245, 0.10);
+  color: var(--color-indigo);
+  border: 1px solid rgba(91, 76, 245, 0.22);
+}
+
+.badge-pen {
+  background: rgba(225, 29, 72, 0.09);
+  color: var(--color-pen);
+  border: 1px solid rgba(225, 29, 72, 0.20);
+}
+
+.badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-amber-dark);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-success {
+  background: rgba(5, 150, 105, 0.09);
+  color: var(--color-success);
+  border: 1px solid rgba(5, 150, 105, 0.22);
+}
+
+/* ── Card Interactions ──────────────────────────────────────────────────── */
+
+.card-hover {
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(91, 76, 245, 0.25);
+}
+
+/* ── Modal Animation ────────────────────────────────────────────────────── */
+
+.modal-backdrop {
+  animation: fadeIn 200ms ease-out forwards;
+}
+
+/* ── Tooltip ────────────────────────────────────────────────────────────── */
+
+.tooltip-box {
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-navy);
+  color: var(--color-paper);
+  padding: 4px 10px;
+  border-radius: 7px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 50;
+  box-shadow: var(--shadow-md);
+}
+
+.tooltip-trigger:hover .tooltip-box {
+  opacity: 1;
+}
+
+/* ── Input Fields ───────────────────────────────────────────────────────── */
+
+.input-field {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid var(--color-line);
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  background: var(--color-paper-light);
+  color: var(--color-ink);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: var(--color-ink-faint);
+}
+
+.input-field:focus {
+  border-color: var(--color-indigo);
+  box-shadow: 0 0 0 3px rgba(91, 76, 245, 0.12);
+}
+
+/* ── Primary Button ─────────────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-navy);
+  color: var(--color-paper);
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px -1px rgba(13, 31, 53, 0.25);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--color-navy-light);
+  box-shadow: 0 4px 14px -2px rgba(13, 31, 53, 0.30);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ── Accent Button (Indigo) ─────────────────────────────────────────────── */
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-indigo);
+  color: #fff;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 3px 12px -1px rgba(91, 76, 245, 0.35);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-accent:hover {
+  background: var(--color-indigo-light);
+  box-shadow: 0 5px 18px -2px rgba(91, 76, 245, 0.40);
+}
+
+.btn-accent:active {
+  transform: scale(0.98);
+}
+
+/* ── Ghost / Outline Button ─────────────────────────────────────────────── */
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-ink-soft);
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid var(--color-line);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  color: var(--color-navy);
+  border-color: rgba(13, 31, 53, 0.35);
+  background: rgba(13, 31, 53, 0.03);
+}
+
+/* ── Stat Card ──────────────────────────────────────────────────────────── */
+
+.stat-card {
+  background: var(--color-paper-light);
+  border: 1.5px solid var(--color-line);
+  border-radius: 1.1rem;
+  padding: 0.875rem;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(91, 76, 245, 0.20);
+}
+
+/* ── Notification Permission Banner ─────────────────────────────────────── */
+
+#notif-permission-banner {
+  animation: slideUp var(--transition-slow) forwards;
+}
+
+/* ── In-App Toast ───────────────────────────────────────────────────────── */
+
+#scora-toast {
+  animation: slideUp 280ms ease-out forwards;
+}
+
+/* ── Heatmap cells ──────────────────────────────────────────────────────── */
+
+.heatmap-done {
+  background: var(--color-indigo);
+}
+
+.heatmap-miss {
+  background: var(--color-line-soft);
+}
+
+.heatmap-done-streak {
+  background: linear-gradient(135deg, var(--color-indigo) 0%, var(--color-amber) 100%);
+}
+
+/* ── Subject Chip (active state) ────────────────────────────────────────── */
+
+.subject-chip-active {
+  background: var(--color-navy);
+  color: var(--color-paper);
+  box-shadow: 0 2px 8px -1px rgba(13, 31, 53, 0.25);
+}
+
+.subject-chip-inactive {
+  background: var(--color-paper-light);
+  color: var(--color-ink-soft);
+  border: 1.5px solid var(--color-line);
+}
+
+.subject-chip-inactive:hover {
+  color: var(--color-navy);
+  border-color: rgba(13, 31, 53, 0.30);
+  background: rgba(13, 31, 53, 0.03);
+}
+
+/* ── Vault Tab (active / inactive) ─────────────────────────────────────── */
+
+.vault-tab-active {
+  background: var(--color-navy);
+  color: var(--color-paper);
+  box-shadow: var(--shadow-sm);
+}
+
+.vault-tab-inactive {
+  color: var(--color-ink-soft);
+}
+
+.vault-tab-inactive:hover {
+  color: var(--color-navy);
+  background: rgba(13, 31, 53, 0.04);
+}
+
+/* ── Bottom Nav active indicator ────────────────────────────────────────── */
+
+.nav-active-dot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-indigo);
+  margin: 0 auto;
+}
+
+/* ── Streak Fire Icon ───────────────────────────────────────────────────── */
+
+.streak-label {
+  color: var(--color-amber-dark);
+  font-weight: 700;
+}

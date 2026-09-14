@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Tracker — Scora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:         '#0D1F35',
+            'navy-light': '#1A3352',
+            'navy-dark':  '#071424',
+            indigo:       '#5B4CF5',
+            'indigo-light':'#7C70F8',
+            'indigo-dark': '#3B2FD9',
+            amber:        '#F59E0B',
+            'amber-dark': '#D97706',
+            paper:        '#FAFAF9',
+            ink:          '#0D1F35',
+            'ink-soft':   '#5E6E84',
+            'ink-faint':  '#94A3B8',
+            pen:          '#E11D48',
+            'pen-light':  '#FB7185',
+            success:      '#059669',
+            'success-light':'#34D399',
+            line:         '#E4E8EF',
+            'line-soft':  '#F1F4F9',
+          },
+          fontFamily: { serif: ['Fraunces', 'serif'], sans: ['Inter', 'sans-serif'] },
+          boxShadow: {
+            'indigo-glow': '0 0 24px rgba(91, 76, 245, 0.40)',
+            'amber-glow':  '0 0 18px rgba(245, 158, 11, 0.45)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="font-sans bg-paper text-ink min-h-screen pb-28">
+
+  <div class="max-w-md sm:max-w-lg mx-auto px-5 pt-8">
+
+    <!-- Notification permission banner (injected by notifications.js) -->
+    <div id="tracker-banner-root"></div>
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="font-serif text-3xl font-bold text-navy mb-0.5">Study Tracker</h1>
+        <p class="text-ink-soft text-sm">30-day consistency grid & daily goals.</p>
+      </div>
+      <button id="open-add-task" class="w-11 h-11 rounded-full bg-navy text-paper flex items-center justify-center shrink-0 shadow-md hover:bg-navy-light transition active:scale-95">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Overall Stats Banner -->
+    <div class="grid grid-cols-3 gap-2.5 mb-6">
+      <div class="bg-white border border-line rounded-2xl p-3.5 text-center shadow-sm">
+        <span id="stat-total-streak" class="font-serif text-2xl font-bold text-amber-dark block">0🔥</span>
+        <span class="text-[10px] font-semibold uppercase text-ink-soft tracking-wider">Top Streak</span>
+      </div>
+      <div class="bg-white border border-line rounded-2xl p-3.5 text-center shadow-sm">
+        <span id="stat-completed-today" class="font-serif text-2xl font-bold text-navy block">0</span>
+        <span class="text-[10px] font-semibold uppercase text-ink-soft tracking-wider">Done Today</span>
+      </div>
+      <div class="bg-white border border-line rounded-2xl p-3.5 text-center shadow-sm">
+        <span id="stat-month-rate" class="font-serif text-2xl font-bold text-indigo block">0%</span>
+        <span class="text-[10px] font-semibold uppercase text-ink-soft tracking-wider">30-Day Rate</span>
+      </div>
+    </div>
+
+    <!-- Tasks list -->
+    <div id="tasks-list" class="space-y-3.5"></div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden text-center border border-dashed border-line rounded-2xl p-8 bg-white/60">
+      <div class="w-12 h-12 rounded-full bg-navy/5 text-navy flex items-center justify-center mx-auto mb-3">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="4" width="18" height="17" rx="2"/>
+          <path d="M8 12h8M8 16h5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="text-sm font-bold text-navy mb-1">No study tasks added yet</p>
+      <p class="text-xs text-ink-soft mb-4 max-w-xs mx-auto">Track daily PYQ practice, chapter revisions, and workbook exercises with a 30-day visual heatmap.</p>
+      <button id="empty-add-btn" class="bg-navy text-paper px-4 py-2 rounded-xl text-xs font-semibold hover:bg-navy-light transition shadow-sm">
+        + Create First Task
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Add task modal -->
+  <div id="add-task-modal" class="hidden fixed inset-0 bg-navy/80 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-fade-in">
+    <div class="bg-paper w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 shadow-2xl border border-line">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-serif text-xl font-bold text-navy">New Study Goal</h2>
+        <button id="cancel-add-task" class="text-ink-soft hover:text-navy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="add-task-form" class="space-y-4">
+        <div>
+          <label for="task-title" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Task Title</label>
+          <input type="text" id="task-title" required placeholder="e.g. Solve Geometry 2026 PYQ Paper"
+            class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+        </div>
+
+        <div>
+          <label for="task-subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Subject</label>
+          <select id="task-subject"
+            class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none">
+            <option value="Algebra">Algebra (Maths I)</option>
+            <option value="Geometry">Geometry (Maths II)</option>
+            <option value="Science - 1">Science - 1</option>
+            <option value="Science - 2">Science - 2</option>
+            <option value="English">English</option>
+            <option value="Marathi">Marathi</option>
+            <option value="Hindi">Hindi</option>
+            <option value="History & Pol Sci">History & Political Science</option>
+            <option value="Geography">Geography</option>
+            <option value="General" selected>General Study / Revision</option>
+            <option value="Other">Other Subject / Extra Activity</option>
+          </select>
+        </div>
+
+        <!-- Custom subject input (shown when Other is selected) -->
+        <div id="custom-subject-container" class="hidden">
+          <label for="custom-subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Specify Other Subject</label>
+          <input type="text" id="custom-subject" placeholder="e.g. Information Technology / Economics"
+            class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" id="modal-close-btn" class="flex-1 py-2.5 rounded-xl text-sm font-semibold border border-line hover:bg-white transition">Cancel</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-navy text-paper hover:bg-navy-light transition shadow-md shadow-navy/10">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="bottom-nav-root"></div>
+  <div id="chat-fab-root"></div>
+
+  <script type="module" src="js/tracker.js"></script>
+</body>
+</html>
