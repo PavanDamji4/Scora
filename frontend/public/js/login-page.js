@@ -1,4 +1,4 @@
-import { loginWithGoogle, loginWithEmail, signupWithEmail, resendVerificationEmail, friendlyAuthError } from './auth.js';
+import { loginWithGoogle, loginWithEmail, signupWithEmail, friendlyAuthError } from './auth.js';
 
 const tabLogin = document.getElementById('tab-login');
 const tabSignup = document.getElementById('tab-signup');
@@ -13,7 +13,7 @@ const formSubtitle = document.getElementById('form-subtitle');
 const passwordInput = document.getElementById('password');
 const togglePasswordBtn = document.getElementById('toggle-password');
 
-let mode = 'login'; // or 'signup'
+let mode = 'login';
 
 function setMode(newMode) {
   mode = newMode;
@@ -60,7 +60,7 @@ function showError(error) {
   errorBox.classList.remove('hidden');
 }
 
-// Password show/hide toggle
+// Password show/hide
 togglePasswordBtn.addEventListener('click', () => {
   const isPass = passwordInput.type === 'password';
   passwordInput.type = isPass ? 'text' : 'password';
@@ -70,59 +70,6 @@ togglePasswordBtn.addEventListener('click', () => {
 tabLogin.addEventListener('click', () => setMode('login'));
 tabSignup.addEventListener('click', () => setMode('signup'));
 toggleLink.addEventListener('click', () => setMode(mode === 'login' ? 'signup' : 'login'));
-
-// ─── Verification pending screen ─────────────────────────────────────────────
-
-let _verifyEmail    = '';
-let _verifyPassword = '';
-
-function showVerificationScreen(email) {
-  _verifyEmail = email;
-  const authSection   = document.getElementById('auth-section');
-  const verifySection = document.getElementById('verify-section');
-  const verifyEmailEl = document.getElementById('verify-email-display');
-
-  if (verifyEmailEl) verifyEmailEl.textContent = email;
-  if (authSection)   authSection.classList.add('hidden');
-  if (verifySection) verifySection.classList.remove('hidden');
-}
-
-function showAuthSection() {
-  const authSection   = document.getElementById('auth-section');
-  const verifySection = document.getElementById('verify-section');
-  if (authSection)   authSection.classList.remove('hidden');
-  if (verifySection) verifySection.classList.add('hidden');
-}
-
-// Resend button
-document.getElementById('resend-verify-btn')?.addEventListener('click', async () => {
-  const btn = document.getElementById('resend-verify-btn');
-  btn.disabled    = true;
-  btn.textContent = 'Sending…';
-
-  try {
-    await resendVerificationEmail(_verifyEmail, _verifyPassword);
-    btn.textContent = '✓ Email sent! Check your inbox.';
-    btn.classList.add('text-success');
-    setTimeout(() => {
-      btn.disabled    = false;
-      btn.textContent = 'Resend verification email';
-      btn.classList.remove('text-success');
-    }, 5000);
-  } catch (err) {
-    btn.disabled    = false;
-    btn.textContent = 'Resend verification email';
-    alert('Could not resend: ' + friendlyAuthError(err));
-  }
-});
-
-// "Back to login" from verification screen
-document.getElementById('back-to-login-btn')?.addEventListener('click', () => {
-  showAuthSection();
-  setMode('login');
-});
-
-// ─── Form submit ──────────────────────────────────────────────────────────────
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -136,7 +83,6 @@ form.addEventListener('submit', async (e) => {
   try {
     if (mode === 'login') {
       await loginWithEmail(email, password);
-      // loginWithEmail redirects on success — nothing else needed here
     } else {
       const fullName   = document.getElementById('full-name').value.trim();
       const schoolName = document.getElementById('school-name').value.trim();
@@ -150,31 +96,14 @@ form.addEventListener('submit', async (e) => {
         return;
       }
 
-      // Store password so resend can re-authenticate
-      _verifyPassword = password;
-
       await signupWithEmail(email, password, {
         name: fullName, school: schoolName, city: cityName, standard,
       });
     }
   } catch (error) {
+    showError(error);
     submitBtn.disabled    = false;
     submitBtn.textContent = originalText;
-
-    if (error.code === 'auth/verification-sent') {
-      // Account created — show the "check your inbox" screen
-      showVerificationScreen(error.email);
-      return;
-    }
-
-    if (error.code === 'auth/email-not-verified') {
-      // Tried to log in but email not verified yet
-      _verifyPassword = password;
-      showVerificationScreen(error.email);
-      return;
-    }
-
-    showError(error);
   }
 });
 

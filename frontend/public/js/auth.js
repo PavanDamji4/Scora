@@ -5,7 +5,6 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   doc,
@@ -67,54 +66,12 @@ export async function loginWithGoogle() {
 
 export async function signupWithEmail(email, password, extraData = {}) {
   const result = await createUserWithEmailAndPassword(auth, email, password);
-  const user   = result.user;
-
-  // Save profile to Firestore — NO redirect here
-  await setDoc(doc(db, 'users', user.uid), {
-    name:               extraData.name || user.email.split('@')[0],
-    email:              user.email,
-    school:             extraData.school   || '',
-    city:               extraData.city     || '',
-    standard:           extraData.standard || '10th Standard (SSC)',
-    medium:             'English',
-    subjects:           SSC_SUBJECTS,
-    photoURL:           user.photoURL || null,
-    onboardingComplete: true,
-    emailVerified:      false,
-    createdAt:          serverTimestamp(),
-  }, { merge: true });
-
-  // Send the verification email
-  await sendEmailVerification(user, {
-    url: window.location.origin + '/Scora/frontend/public/index.html',
-  });
-
-  // Sign them out immediately — must verify before entering the app
-  await signOut(auth);
-
-  // Throw so login-page.js can show the "check your inbox" screen
-  throw { code: 'auth/verification-sent', email };
+  await routeAfterLogin(result.user, true, extraData);
 }
 
 export async function loginWithEmail(email, password) {
   const result = await signInWithEmailAndPassword(auth, email, password);
-
-  if (!result.user.emailVerified) {
-    // Sign them back out so requireAuth doesn't let them through
-    await signOut(auth);
-    throw { code: 'auth/email-not-verified', email, user: result.user };
-  }
-
   await routeAfterLogin(result.user, false);
-}
-
-export async function resendVerificationEmail(email, password) {
-  // Re-sign in temporarily to get the user object, then resend
-  const result = await signInWithEmailAndPassword(auth, email, password);
-  await sendEmailVerification(result.user, {
-    url: window.location.origin + '/Scora/frontend/public/index.html',
-  });
-  await signOut(auth);
 }
 
 export function logout() {
@@ -125,13 +82,8 @@ export function logout() {
 
 export function requireAuth(callback) {
   onAuthStateChanged(auth, (user) => {
-    if (user && user.emailVerified) {
+    if (user) {
       callback(user);
-    } else if (user && !user.emailVerified) {
-      // Signed in but not verified — boot them back to login
-      signOut(auth).then(() => {
-        window.location.href = 'index.html';
-      });
     } else {
       window.location.href = 'index.html';
     }
