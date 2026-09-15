@@ -18,4 +18,4 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const googleProvider = new GoogleAuthProvider();
-export const BACKEND_URL = "https://scora-backend.onrender.com"; // update after Render deployment
+export const BACKEND_URL = " https://scora-vrvu.onrender.com"; // update after Render deployment
