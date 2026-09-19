@@ -1,6 +1,6 @@
 import { getAuthToken } from './auth.js';
 
-export const BACKEND_URL = "http://localhost:5000";
+export const BACKEND_URL = "https://scora-vrvu.onrender.com";
 
 export async function askAI(message, subject, imageDataUrl) {
   const token = await getAuthToken();
