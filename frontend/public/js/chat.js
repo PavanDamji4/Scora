@@ -298,8 +298,20 @@ chatForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Auto-grow textarea
+// Auto-grow textarea & Enter key to send
 if (chatInput) {
+  chatInput.addEventListener('keydown', (e) => {
+    // Submit on Enter without Shift; allow Shift+Enter for newlines
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (chatForm.requestSubmit) {
+        chatForm.requestSubmit();
+      } else {
+        chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+    }
+  });
+
   chatInput.addEventListener('input', () => {
     chatInput.style.height = 'auto';
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';

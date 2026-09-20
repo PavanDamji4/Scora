@@ -106,10 +106,20 @@ function render30DayHeatmap(completions) {
     const isDone = !!completions?.[dateStr];
     const displayDate = new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
     
+    // Calculate column position on mobile (15 columns) to clamp tooltips inside card boundaries
+    const blockIndex = (DAYS_COUNT - 1) - i;
+    const colIndex = blockIndex % 15;
+    let alignClass = '';
+    if (colIndex <= 1) {
+      alignClass = 'tooltip-left';
+    } else if (colIndex >= 13) {
+      alignClass = 'tooltip-right';
+    }
+
     blocks.push(`
       <div class="tooltip-trigger relative group">
         <div class="w-full aspect-square rounded-[3px] transition-colors ${isDone ? 'bg-indigo' : 'bg-line/60'}"></div>
-        <div class="tooltip-box">${displayDate}: ${isDone ? 'Completed ✓' : 'Missed'}</div>
+        <div class="tooltip-box ${alignClass}">${displayDate}: ${isDone ? 'Completed ✓' : 'Missed'}</div>
       </div>
     `);
   }
@@ -133,7 +143,7 @@ function taskCard(task) {
   const isDoneToday = !!task.completions?.[today];
 
   const card = document.createElement('div');
-  card.className = 'bg-white border border-line rounded-2xl p-4 shadow-sm hover:border-navy/30 transition';
+  card.className = 'bg-white border border-line rounded-2xl p-4 shadow-sm hover:border-navy/30 transition overflow-hidden relative';
   card.innerHTML = `
     <div class="flex items-start justify-between gap-3">
       <div class="min-w-0 pr-2">

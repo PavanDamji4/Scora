@@ -70,19 +70,33 @@
   transform: translateX(-50%);
   background: var(--color-navy);
   color: var(--color-paper);
-  padding: 4px 10px;
+  padding: 4px 8px;
   border-radius: 7px;
-  font-size: 11px;
+  font-size: 10px;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity var(--transition-fast);
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
   z-index: 50;
   box-shadow: var(--shadow-md);
 }
 
-.tooltip-trigger:hover .tooltip-box {
+.tooltip-box.tooltip-left {
+  left: 0;
+  transform: none;
+}
+
+.tooltip-box.tooltip-right {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.tooltip-trigger:hover .tooltip-box,
+.tooltip-trigger:focus-within .tooltip-box {
   opacity: 1;
+  visibility: visible;
 }
 
 /* ── Input Fields ───────────────────────────────────────────────────────── */

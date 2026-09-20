@@ -9,6 +9,8 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -16,6 +18,8 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -211,3 +215,21 @@ textarea:focus-visible {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
 }
+
+/* ── Mobile-First Form Controls (Prevents iOS/Android auto-zoom) ────────── */
+@media screen and (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ── Safe Area Utility Classes ─────────────────────────────────────────── */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+.mb-safe {
+  margin-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+

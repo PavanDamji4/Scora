@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content" />
   <title>Study Tracker — Scora</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,20 +48,20 @@
     };
   </script>
 </head>
-<body class="font-sans bg-paper text-ink min-h-screen pb-28">
+<body class="font-sans bg-paper text-ink min-h-screen pb-28 overflow-x-hidden">
 
-  <div class="max-w-md sm:max-w-lg mx-auto px-5 pt-8">
+  <div class="max-w-md sm:max-w-lg mx-auto px-4 sm:px-5 pt-6 sm:pt-8 w-full">
 
     <!-- Notification permission banner (injected by notifications.js) -->
     <div id="tracker-banner-root"></div>
 
     <!-- Header -->
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between mb-5 sm:mb-6">
       <div>
-        <h1 class="font-serif text-3xl font-bold text-navy mb-0.5">Study Tracker</h1>
-        <p class="text-ink-soft text-sm">30-day consistency grid & daily goals.</p>
+        <h1 class="font-serif text-2xl sm:text-3xl font-bold text-navy mb-0.5">Study Tracker</h1>
+        <p class="text-ink-soft text-xs sm:text-sm">30-day consistency grid & daily goals.</p>
       </div>
-      <button id="open-add-task" class="w-11 h-11 rounded-full bg-navy text-paper flex items-center justify-center shrink-0 shadow-md hover:bg-navy-light transition active:scale-95">
+      <button id="open-add-task" aria-label="Add new study task" class="w-11 h-11 rounded-full bg-navy text-paper flex items-center justify-center shrink-0 shadow-md hover:bg-navy-light active:scale-95 transition">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
         </svg>
@@ -69,18 +69,18 @@
     </div>
 
     <!-- Overall Stats Banner -->
-    <div class="grid grid-cols-3 gap-2.5 mb-6">
-      <div class="bg-white border border-line rounded-2xl p-3.5 text-center shadow-sm">
-        <span id="stat-total-streak" class="font-serif text-2xl font-bold text-amber-dark block">0🔥</span>
-        <span class="text-[10px] font-semibold uppercase text-ink-soft tracking-wider">Top Streak</span>
+    <div class="grid grid-cols-3 gap-2 sm:gap-2.5 mb-6">
+      <div class="bg-white border border-line rounded-2xl p-2.5 sm:p-3.5 text-center shadow-sm flex flex-col items-center justify-center min-w-0">
+        <span id="stat-total-streak" class="font-serif text-xl sm:text-2xl font-bold text-amber-dark block truncate w-full">0🔥</span>
+        <span class="text-[9px] sm:text-[10px] font-semibold uppercase text-ink-soft tracking-wider truncate w-full mt-0.5">Top Streak</span>
       </div>
-      <div class="bg-white border border-line rounded-2xl p-3.5 text-center shadow-sm">
-        <span id="stat-completed-today" class="font-serif text-2xl font-bold text-navy block">0</span>
-        <span class="text-[10px] font-semibold uppercase text-ink-soft tracking-wider">Done Today</span>
+      <div class="bg-white border border-line rounded-2xl p-2.5 sm:p-3.5 text-center shadow-sm flex flex-col items-center justify-center min-w-0">
+        <span id="stat-completed-today" class="font-serif text-xl sm:text-2xl font-bold text-navy block truncate w-full">0</span>
+        <span class="text-[9px] sm:text-[10px] font-semibold uppercase text-ink-soft tracking-wider truncate w-full mt-0.5">Done Today</span>
       </div>
-      <div class="bg-white border border-line rounded-2xl p-3.5 text-center shadow-sm">
-        <span id="stat-month-rate" class="font-serif text-2xl font-bold text-indigo block">0%</span>
-        <span class="text-[10px] font-semibold uppercase text-ink-soft tracking-wider">30-Day Rate</span>
+      <div class="bg-white border border-line rounded-2xl p-2.5 sm:p-3.5 text-center shadow-sm flex flex-col items-center justify-center min-w-0">
+        <span id="stat-month-rate" class="font-serif text-xl sm:text-2xl font-bold text-indigo block truncate w-full">0%</span>
+        <span class="text-[9px] sm:text-[10px] font-semibold uppercase text-ink-soft tracking-wider truncate w-full mt-0.5">30-Day Rate</span>
       </div>
     </div>
 
@@ -108,13 +108,14 @@
   <div id="add-task-modal"
     class="hidden fixed inset-0 bg-navy/80 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
 
-    <div class="bg-paper w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl shadow-2xl border border-line
-                flex flex-col overflow-hidden max-h-[calc(100dvh-12px)] sm:max-h-[calc(100dvh-32px)]">
+    <div class="bg-paper w-full max-w-lg sm:max-w-md mx-auto rounded-t-3xl sm:rounded-2xl shadow-2xl border border-line
+                flex flex-col overflow-hidden max-h-[calc(100dvh-12px)] sm:max-h-[calc(100dvh-32px)]"
+         style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));">
 
       <!-- Modal header — fixed, never scrolls away -->
-      <div class="flex items-center justify-between px-6 pt-5 pb-4 shrink-0">
+      <div class="flex items-center justify-between px-5 sm:px-6 pt-5 pb-3.5 shrink-0 border-b border-line/40">
         <h2 class="font-serif text-xl font-bold text-navy">New Study Goal</h2>
-        <button type="button" id="cancel-add-task" class="w-8 h-8 rounded-full bg-line-soft flex items-center justify-center text-ink-soft hover:text-navy transition">
+        <button type="button" id="cancel-add-task" aria-label="Close" class="w-8 h-8 rounded-full bg-line-soft flex items-center justify-center text-ink-soft hover:text-navy active:scale-95 transition">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
           </svg>
@@ -122,18 +123,18 @@
       </div>
 
       <!-- Scrollable form area -->
-      <div class="overflow-y-auto px-6 pb-2 flex-1">
+      <div class="overflow-y-auto px-5 sm:px-6 py-4 flex-1">
         <form id="add-task-form" class="space-y-4">
           <div>
-            <label for="task-title" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Task Title</label>
+            <label for="task-title" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5">Task Title</label>
             <input type="text" id="task-title" required placeholder="e.g. Solve Geometry 2026 PYQ Paper"
-              class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+              class="w-full px-3.5 py-3 border border-line rounded-xl text-base sm:text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none transition" />
           </div>
 
           <div>
-            <label for="task-subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Subject</label>
+            <label for="task-subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5">Subject</label>
             <select id="task-subject"
-              class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none">
+              class="w-full px-3.5 py-3 border border-line rounded-xl text-base sm:text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none transition">
               <option value="Algebra">Algebra (Maths I)</option>
               <option value="Geometry">Geometry (Maths II)</option>
               <option value="Science - 1">Science - 1</option>
@@ -150,20 +151,18 @@
 
           <!-- Custom subject input (shown when Other is selected) -->
           <div id="custom-subject-container" class="hidden">
-            <label for="custom-subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Specify Other Subject</label>
+            <label for="custom-subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5">Specify Other Subject</label>
             <input type="text" id="custom-subject" placeholder="e.g. Information Technology / Economics"
-              class="w-full px-3.5 py-2.5 border border-line rounded-xl text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+              class="w-full px-3.5 py-3 border border-line rounded-xl text-base sm:text-sm bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none transition" />
           </div>
 
-          <!-- Submit button now lives INSIDE the form itself, so
-               addForm.querySelector('button[type="submit"]') actually finds it. -->
           <div class="pt-3 pb-1 flex gap-3">
             <button type="button" id="modal-close-btn"
-              class="flex-1 py-3 rounded-xl text-sm font-semibold border border-line hover:bg-white transition">
+              class="flex-1 py-3 sm:py-3.5 rounded-xl text-sm font-semibold border border-line hover:bg-white active:bg-line/40 transition">
               Cancel
             </button>
             <button type="submit" id="save-task-btn"
-              class="flex-1 py-3 rounded-xl text-sm font-semibold bg-navy text-paper hover:bg-navy-light transition shadow-md shadow-navy/10">
+              class="flex-1 py-3 sm:py-3.5 rounded-xl text-sm font-semibold bg-navy text-paper hover:bg-navy-light active:bg-navy-dark transition shadow-md shadow-navy/10">
               Save Task
             </button>
           </div>

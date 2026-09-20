@@ -39,7 +39,7 @@ export function renderBottomNav(activeId) {
   if (!root) return;
 
   root.innerHTML = `
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-line z-50 shadow-[0_-2px_12px_rgba(13,31,53,0.06)]">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-line z-50 shadow-[0_-2px_12px_rgba(13,31,53,0.06)]" style="padding-bottom: max(0.25rem, env(safe-area-inset-bottom, 0px));">
       <div class="max-w-lg mx-auto grid grid-cols-4">
         ${NAV_ITEMS.map((item) => {
           const isActive = item.id === activeId;
