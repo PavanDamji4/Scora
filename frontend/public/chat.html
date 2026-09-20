@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="chat-html h-full">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content" />
@@ -48,14 +48,45 @@
     };
   </script>
   <style>
+    :root {
+      --app-height: 100dvh;
+    }
+    html.chat-html,
+    body.chat-body {
+      height: 100% !important;
+      height: var(--app-height, 100dvh) !important;
+      min-height: 0 !important;
+      max-height: var(--app-height, 100dvh) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      position: relative !important;
+    }
     #messages { scroll-behavior: smooth; }
     .typing-dot { animation: bounce 1s infinite; }
     .typing-dot:nth-child(2) { animation-delay: 0.15s; }
     .typing-dot:nth-child(3) { animation-delay: 0.3s; }
     @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
   </style>
+  <script>
+    (function() {
+      function syncVh() {
+        var h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        document.documentElement.style.setProperty('--app-height', h + 'px');
+        if (document.body && document.body.classList.contains('chat-body')) {
+          document.body.style.height = h + 'px';
+        }
+      }
+      syncVh();
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', syncVh);
+        window.visualViewport.addEventListener('scroll', syncVh);
+      }
+      window.addEventListener('resize', syncVh);
+    })();
+  </script>
 </head>
-<body class="font-sans bg-paper text-ink fixed inset-0 flex flex-col overflow-hidden w-full h-[100dvh]" style="height: 100dvh; height: -webkit-fill-available;">
+<body class="chat-body font-sans bg-paper text-ink flex flex-col h-full w-full overflow-hidden">
 
   <!-- Header -->
   <div class="border-b border-line bg-white px-4 sm:px-5 py-3 shrink-0 shadow-sm z-10">
@@ -112,7 +143,7 @@
   </div>
 
   <!-- Messages -->
-  <div id="messages" class="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-4 max-w-2xl mx-auto w-full"></div>
+  <div id="messages" class="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 py-4 space-y-4 max-w-2xl mx-auto w-full"></div>
 
   <!-- Image preview (shown when attached) -->
   <div id="image-preview-bar" class="hidden px-4 sm:px-5 pb-2 shrink-0 bg-white border-t border-line pt-2">
@@ -125,8 +156,8 @@
   </div>
 
   <!-- Input bar -->
-  <div class="border-t border-line bg-white shrink-0 shadow-lg z-20" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));">
-    <form id="chat-form" class="max-w-2xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-end gap-2">
+  <div id="chat-input-bar" class="border-t border-line bg-white shrink-0 shadow-lg z-20" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));">
+    <form id="chat-form" class="max-w-2xl mx-auto px-3 sm:px-4 py-2 sm:py-2.5 flex items-end gap-2">
       <label title="Attach Textbook/Homework Photo" class="shrink-0 w-10 h-10 rounded-full border border-line flex items-center justify-center cursor-pointer text-ink-soft hover:bg-paper hover:text-navy transition active:scale-95">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <rect x="3" y="5" width="18" height="14" rx="2"/>

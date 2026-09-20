@@ -20,6 +20,22 @@ requireAuth((user) => {
   loadSession(activeSubject);
 });
 
+// Sync visual viewport height for mobile devices (Chrome/Safari)
+function syncViewport() {
+  const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  document.documentElement.style.setProperty('--app-height', `${vh}px`);
+  if (document.body && document.body.classList.contains('chat-body')) {
+    document.body.style.height = `${vh}px`;
+  }
+}
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', syncViewport);
+  window.visualViewport.addEventListener('scroll', syncViewport);
+}
+window.addEventListener('resize', syncViewport);
+window.addEventListener('orientationchange', () => setTimeout(syncViewport, 100));
+syncViewport();
+
 // ---------- Simple Markdown Parser for Sarthi responses ----------
 function parseMarkdown(text) {
   if (!text) return '';
@@ -153,6 +169,15 @@ async function saveSession(subject) {
 function renderMessages(messages) {
   const root = document.getElementById('messages');
   if (!root) return;
+
+  const promptSuggestions = document.getElementById('prompt-suggestions');
+  if (promptSuggestions) {
+    if (messages.length > 0) {
+      promptSuggestions.classList.add('hidden');
+    } else {
+      promptSuggestions.classList.remove('hidden');
+    }
+  }
 
   if (messages.length === 0) {
     root.innerHTML = `
@@ -315,5 +340,13 @@ if (chatInput) {
   chatInput.addEventListener('input', () => {
     chatInput.style.height = 'auto';
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+  });
+
+  chatInput.addEventListener('focus', () => {
+    setTimeout(() => {
+      syncViewport();
+      const root = document.getElementById('messages');
+      if (root) root.scrollTop = root.scrollHeight;
+    }, 250);
   });
 }
